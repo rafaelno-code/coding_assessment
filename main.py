@@ -48,16 +48,16 @@ def create_schedule():
     return schedule
 
 def sort_times(bay_times: list, ship_times: list):
-    index = len(bay_times)
+    index = 0
     for i in range(0, len(bay_times)):
-            if bay_times[i][0] > ship_times[0]:
-                index = i
+            if bay_times[i][1] <= ship_times[0]:
+                index = i+1
     return index
         
 def available_bays(schedule: list):
     for i in range(0, len(db.docking_bays)):
-        bay_times = get_bay_times(db.docking_bays[i]['bay_id']-1)
         for ship in db.incoming_ships:
+            bay_times = get_bay_times(db.docking_bays[i]['bay_id']-1)
             ship_times = get_incoming_ship_times(ship['ship_name'])
             if not compare_times(bay_times, ship_times):
                 continue
